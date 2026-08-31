@@ -1,2 +1,17 @@
 # SEMD-LMS-SYSTEM
-A Learning Management System (LMS) is a digital platform used to create, manage, and deliver educational courses or training programs. It allows teachers to upload content, assign tasks, and track progress, while students can access materials, submit assignments, and learn anytime, anywhere.
+
+A simple Learning Management System website built with HTML, CSS, and JavaScript.
+
+## Features
+- Modern minimal black-and-white UI
+- Course showcase section
+- Study planner with task tracking
+- Contact form section
+- Mobile-friendly responsive layout
+
+## Run locally
+Open the file in a browser:
+
+```bash
+start index.html
+```
