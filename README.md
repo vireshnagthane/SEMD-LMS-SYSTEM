@@ -3,7 +3,7 @@
 A simple Learning Management System website built with HTML, CSS, and JavaScript.
 
 ## Website
-Live demo: https://vireshnagthane.github.io/SEMD-LMS-SYSTEM/
+Live demo: https://studentlearningmanagementsystem-c668rg5zu.vercel.app/
 
 ## Features
 - Modern minimal black-and-white UI
