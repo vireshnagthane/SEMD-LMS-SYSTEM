@@ -591,7 +591,7 @@
 
       <nav class="nav-links" id="navLinks">
         <a href="#home">Home</a>
-        <a href="#features">Features</a>
+        <a href="#dashboard">Dashboard</a>
         <a href="#courses">Courses</a>
         <a href="#planner">Planner</a>
         <a href="#contact">Contact</a>
@@ -612,27 +612,27 @@
           <span class="eyebrow">Learn smarter</span>
           <h1>Study better with <span class="script-word">simple daily</span> learning tools.</h1>
           <p class="lead">
-            Build momentum with lessons, short tasks, and clear progress tracking.
-            This lightweight learning website helps students stay focused without clutter.
+            Keep your lessons, tasks, and progress in one simple place.
+            This student dashboard is designed to be lightweight, practical, and easy to use.
           </p>
 
           <div class="hero-actions">
-            <a href="#courses" class="btn btn-primary">Explore Courses</a>
+            <a href="#dashboard" class="btn btn-primary">Open Dashboard</a>
             <a href="#planner" class="btn btn-secondary">View Planner</a>
           </div>
 
           <div class="hero-stats">
             <div class="stat">
-              <strong>24+</strong>
+              <strong id="statCourses">5</strong>
               <span>Courses</span>
             </div>
             <div class="stat">
-              <strong>89%</strong>
-              <span>Completion</span>
+              <strong id="statCompletion">82%</strong>
+              <span>Progress</span>
             </div>
             <div class="stat">
-              <strong>12K</strong>
-              <span>Students</span>
+              <strong id="statTasks">3</strong>
+              <span>Tasks</span>
             </div>
           </div>
         </div>
@@ -645,15 +645,15 @@
             </div>
             <div class="mini-row">
               <span>Web Basics</span>
-              <strong>72%</strong>
+              <strong id="currentCourseProgress">72%</strong>
             </div>
-            <div class="progress"><span></span></div>
+            <div class="progress"><span id="courseProgressBar" style="width:72%"></span></div>
           </div>
 
           <div class="mini-card">
             <div class="mini-row">
-              <strong>This Week</strong>
-              <span class="chip">4 tasks</span>
+              <strong>Today</strong>
+              <span class="chip" id="todayTasksChip">4 tasks</span>
             </div>
             <div class="calendar">
               <div class="day"><span>Mon</span><strong>3</strong></div>
@@ -664,74 +664,36 @@
         </div>
       </section>
 
-      <section id="features">
+      <section id="dashboard">
         <div class="section-head">
           <div>
-            <h2>Why students choose us</h2>
-            <p class="muted">Simple design, useful tools, and better daily learning habits.</p>
+            <h2>Student dashboard</h2>
+            <p class="muted">Your main study overview for the week.</p>
           </div>
         </div>
 
-        <div class="feature-grid">
-          <article class="card feature">
-            <div class="feature-icon">📘</div>
-            <h3>Clear lessons</h3>
-            <p>Structured modules help learners find the right topic quickly and stay organized.</p>
-          </article>
+        <div class="workspace">
+          <div class="task-box">
+            <h3>My courses</h3>
+            <div id="courseOverview" class="task-list" style="margin-top:16px;"></div>
+          </div>
 
-          <article class="card feature">
-            <div class="feature-icon">✅</div>
-            <h3>Task tracking</h3>
-            <p>Keep track of daily assignments, class work, and weekly goals in one place.</p>
-          </article>
-
-          <article class="card feature">
-            <div class="feature-icon">📈</div>
-            <h3>Progress updates</h3>
-            <p>See how much you have completed and stay motivated with short progress checks.</p>
-          </article>
+          <div class="contact-box">
+            <h3>Upcoming work</h3>
+            <div id="assignmentList" style="margin-top:16px;"></div>
+          </div>
         </div>
       </section>
 
       <section id="courses">
         <div class="section-head">
           <div>
-            <h2>Popular courses</h2>
-            <p class="muted">Great for beginners and active learners who want practical knowledge.</p>
+            <h2>Courses</h2>
+            <p class="muted">Choose what to study next.</p>
           </div>
         </div>
 
-        <div class="course-grid">
-          <article class="card course-item">
-            <div class="course-meta">
-              <span class="chip">Design</span>
-              <span>6 weeks</span>
-            </div>
-            <h3>UI Basics</h3>
-            <p>Learn color, spacing, design rules, and how to build clean interfaces.</p>
-            <button class="btn btn-primary">Enroll</button>
-          </article>
-
-          <article class="card course-item">
-            <div class="course-meta">
-              <span class="chip">Code</span>
-              <span>8 weeks</span>
-            </div>
-            <h3>HTML & CSS</h3>
-            <p>Build pages from scratch and learn how structure and style work together.</p>
-            <button class="btn btn-primary">Enroll</button>
-          </article>
-
-          <article class="card course-item">
-            <div class="course-meta">
-              <span class="chip">Marketing</span>
-              <span>5 weeks</span>
-            </div>
-            <h3>Digital Skills</h3>
-            <p>Improve online communication, publishing, and simple content strategy skills.</p>
-            <button class="btn btn-primary">Enroll</button>
-          </article>
-        </div>
+        <div class="course-grid" id="courseGrid"></div>
       </section>
 
       <section id="planner">
@@ -783,18 +745,43 @@
   </main>
 
   <script>
-    const taskInput = document.getElementById('taskInput');
-    const addTaskBtn = document.getElementById('addTaskBtn');
-    const taskList = document.getElementById('taskList');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-
-    let currentFilter = 'all';
-
     const tasks = [
       { id: 1, text: 'Finish reading chapter 3', done: false },
       { id: 2, text: 'Practice CSS layout exercise', done: true },
       { id: 3, text: 'Review quiz notes', done: false }
     ];
+
+    const assignments = [
+      { id: 1, title: 'HTML project', due: 'Today', done: false },
+      { id: 2, title: 'Quiz review', due: 'Tomorrow', done: false },
+      { id: 3, title: 'Lab reflection', due: 'Friday', done: true }
+    ];
+
+    const courses = [
+      { id: 1, name: 'Web Basics', type: 'Code', duration: '8 weeks', progress: 72, enrolled: true },
+      { id: 2, name: 'UI Basics', type: 'Design', duration: '6 weeks', progress: 48, enrolled: true },
+      { id: 3, name: 'Digital Skills', type: 'Marketing', duration: '5 weeks', progress: 60, enrolled: true },
+      { id: 4, name: 'Research Methods', type: 'Study', duration: '4 weeks', progress: 30, enrolled: false },
+      { id: 5, name: 'Communication Lab', type: 'Soft Skills', duration: '3 weeks', progress: 55, enrolled: false }
+    ];
+
+    const taskInput = document.getElementById('taskInput');
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const taskList = document.getElementById('taskList');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    let currentFilter = 'all';
+
+    function updateStats() {
+      const activeTasks = tasks.filter(task => !task.done).length;
+      const avgProgress = Math.round(courses.reduce((sum, course) => sum + course.progress, 0) / courses.length);
+      document.getElementById('statCourses').textContent = courses.filter(course => course.enrolled).length;
+      document.getElementById('statCompletion').textContent = avgProgress + '%';
+      document.getElementById('statTasks').textContent = activeTasks;
+      document.getElementById('todayTasksChip').textContent = tasks.length + ' tasks';
+      document.getElementById('currentCourseProgress').textContent = courses[0].progress + '%';
+      const progressBar = document.getElementById('courseProgressBar');
+      progressBar.style.width = courses[0].progress + '%';
+    }
 
     function renderTasks() {
       const visibleTasks = tasks.filter(task => {
@@ -823,6 +810,7 @@
         checkbox.addEventListener('change', () => {
           task.done = checkbox.checked;
           renderTasks();
+          updateStats();
         });
 
         const deleteBtn = item.querySelector('.delete-btn');
@@ -830,9 +818,110 @@
           const index = tasks.findIndex(t => t.id === task.id);
           if (index !== -1) tasks.splice(index, 1);
           renderTasks();
+          updateStats();
         });
 
         taskList.appendChild(item);
+      });
+    }
+
+    function renderAssignments() {
+      const list = document.getElementById('assignmentList');
+      list.innerHTML = assignments.map(item => `
+        <div class="task-item ${item.done ? 'done' : ''}" style="margin-bottom:12px;">
+          <div class="task-left">
+            <input type="checkbox" ${item.done ? 'checked' : ''} data-assignment-id="${item.id}" />
+            <div>
+              <div class="task-text">${item.title}</div>
+              <small style="color:#666;">Due: ${item.due}</small>
+            </div>
+          </div>
+          <button class="tiny-btn btn-secondary" data-assignment-action="${item.id}">Mark done</button>
+        </div>
+      `).join('');
+
+      list.querySelectorAll('[data-assignment-id]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          const id = Number(checkbox.dataset.assignmentId);
+          const assignment = assignments.find(item => item.id === id);
+          if (assignment) {
+            assignment.done = checkbox.checked;
+            renderAssignments();
+          }
+        });
+      });
+
+      list.querySelectorAll('[data-assignment-action]').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = Number(button.dataset.assignmentAction);
+          const assignment = assignments.find(item => item.id === id);
+          if (assignment) {
+            assignment.done = true;
+            renderAssignments();
+          }
+        });
+      });
+    }
+
+    function renderCourseOverview() {
+      const container = document.getElementById('courseOverview');
+      container.innerHTML = courses.map(course => `
+        <div class="task-item" style="margin-bottom:12px;">
+          <div class="task-left">
+            <div class="chip" style="min-width:74px; justify-content:center;">${course.type}</div>
+            <div>
+              <div class="task-text">${course.name}</div>
+              <small style="color:#666;">${course.progress}% complete</small>
+            </div>
+          </div>
+          <button class="tiny-btn btn-secondary" data-course-id="${course.id}">${course.enrolled ? 'Open' : 'Join'}</button>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('[data-course-id]').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = Number(button.dataset.courseId);
+          const course = courses.find(item => item.id === id);
+          if (course) {
+            course.enrolled = true;
+            course.progress = Math.min(90, course.progress + 10);
+            renderCourseOverview();
+            renderCourses();
+            updateStats();
+          }
+        });
+      });
+    }
+
+    function renderCourses() {
+      const container = document.getElementById('courseGrid');
+      container.innerHTML = courses.map(course => `
+        <article class="card course-item">
+          <div class="course-meta">
+            <span class="chip">${course.type}</span>
+            <span>${course.duration}</span>
+          </div>
+          <h3>${course.name}</h3>
+          <p>Progress: ${course.progress}%</p>
+          <div class="progress" style="margin:14px 0 12px;"><span style="width:${course.progress}%"></span></div>
+          <button class="btn ${course.enrolled ? 'btn-secondary' : 'btn-primary'}" data-course-button="${course.id}">
+            ${course.enrolled ? 'Continue' : 'Enroll'}
+          </button>
+        </article>
+      `).join('');
+
+      container.querySelectorAll('[data-course-button]').forEach(button => {
+        button.addEventListener('click', () => {
+          const id = Number(button.dataset.courseButton);
+          const course = courses.find(item => item.id === id);
+          if (course) {
+            course.enrolled = true;
+            course.progress = Math.min(95, course.progress + 15);
+            renderCourseOverview();
+            renderCourses();
+            updateStats();
+          }
+        });
       });
     }
 
@@ -849,6 +938,7 @@
       taskInput.value = '';
       taskInput.focus();
       renderTasks();
+      updateStats();
     });
 
     taskInput.addEventListener('keydown', (event) => {
@@ -858,7 +948,6 @@
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
         currentFilter = button.dataset.filter;
-
         filterButtons.forEach(btn => btn.classList.toggle('active', btn === button));
         renderTasks();
       });
@@ -889,6 +978,10 @@
     });
 
     renderTasks();
+    renderAssignments();
+    renderCourseOverview();
+    renderCourses();
+    updateStats();
   </script>
 </body>
 </html>
