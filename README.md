@@ -2,6 +2,9 @@
 
 A simple Learning Management System website built with HTML, CSS, and JavaScript.
 
+## Website
+Live demo: https://vireshnagthane.github.io/SEMD-LMS-SYSTEM/
+
 ## Features
 - Modern minimal black-and-white UI
 - Course showcase section
